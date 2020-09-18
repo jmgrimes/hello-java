@@ -1,0 +1,50 @@
+name: Version Workflow
+on:
+  release:
+    types:
+      - published
+  schedule:
+    - cron: "0 0 * * 0"
+
+jobs:
+  update-version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v2
+        with:
+          ref: refs/heads/develop
+      - name: Setup Git Environment
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+      - name: Setup Java SDK and Maven
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+          java-package: jdk
+          architecture: x64
+      - name: Cache Local Maven Repository
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+      - name: Update Version
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          NEXT_VERSION_PREFIX=$(date +%Y.%U)
+          PREVIOUS_VERSION=$(mvn help:evaluate --quiet --batch-mode -Dexpression=project.version -DforceStdout)
+          if [[ $PREVIOUS_VERSION == $NEXT_VERSION_PREFIX.* ]]
+          then
+            ((NEXT_VERSION_SUFFIX=${PREVIOUS_VERSION#$NEXT_VERSION_PREFIX.} + 1))
+          else
+            ((NEXT_VERSION_SUFFIX=0))
+          fi
+          NEXT_VERSION=$NEXT_VERSION_PREFIX.$NEXT_VERSION_SUFFIX
+          mvn versions:set --quiet --batch-mode -DnewVersion=$NEXT_VERSION
+          git add pom.xml
+          git commit -m "Development Version Update from $PREVIOUS_VERSION to $NEXT_VERSION."
+          git push

@@ -1,0 +1,64 @@
+name: Build Workflow
+on:
+  pull_request:
+    branches:
+      - develop   # build pull requests targeting develop branch
+      - master    # build pull requests targeting master branch
+      - release/* # build pull requests targeting release branches
+  push:
+    branches:
+      - develop   # build pushes to develop branch
+      - master    # build pushes to master branch
+      - feature/* # build pushes to feature branches
+      - hotfix/*  # build pushes to hotfix branches
+      - release/* # build pushes to release branches
+      - support/* # build pushes to support branches
+  release:
+    types:
+      - published
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v2
+      - name: Setup Java SDK and Maven
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+          java-package: jdk
+          architecture: x64
+      - name: Cache Local Maven Repository
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+      - name: Environment
+        run: |
+          echo ::set-env name=VERSION::$(mvn help:evaluate --quiet --batch-mode -Dexpression=project.version -DforceStdout)
+      - name: Build and Test with Maven
+        run: mvn --batch-mode clean verify
+      - name: Build Docker Image and Publish
+        uses: docker/build-push-action@v1
+        with:
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: docker.pkg.github.com
+          repository: jmgrimes/hello-java/hello-java
+          tag_with_ref: true
+          push: ${{ github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop' || startsWith(github.ref, 'refs/heads/release/') || startsWith(github.ref, 'refs/tags/') }}
+      - name: Prepare Draft Release
+        uses: actions/create-release@v1
+        if: ${{ github.ref == 'refs/heads/master' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: refs/tags/v${{ env.VERSION }}
+          release_name: Release Version ${{ env.VERSION }}
+          draft: true
+
+
+
