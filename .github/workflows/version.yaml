@@ -41,7 +41,7 @@ jobs:
           then
             ((NEXT_VERSION_SUFFIX=${PREVIOUS_VERSION#$NEXT_VERSION_PREFIX.} + 1))
           else
-            ((NEXT_VERSION_SUFFIX=0))
+            NEXT_VERSION_SUFFIX=0
           fi
           NEXT_VERSION=$NEXT_VERSION_PREFIX.$NEXT_VERSION_SUFFIX
           mvn versions:set --quiet --batch-mode -DnewVersion=$NEXT_VERSION
