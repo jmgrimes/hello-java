@@ -1,10 +1,5 @@
 name: Build Workflow
 on:
-  pull_request:
-    branches:
-      - develop   # build pull requests targeting develop branch
-      - master    # build pull requests targeting master branch
-      - release/* # build pull requests targeting release branches
   push:
     branches:
       - develop   # build pushes to develop branch
