@@ -26,7 +26,7 @@ Versioned tags are published using the tag name.
 ## Configuration
 
 When running the application, it expects to find a yaml file at the 
-/app/application.yaml location.  The file must contain the following 
+/app/conf/application.yaml location.  The file must contain the following 
 contents.
 
 ```yaml
