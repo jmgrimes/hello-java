@@ -9,6 +9,8 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <dropwizard.version>2.0.13</dropwizard.version>
+    <opentelemetry.version>0.13.1</opentelemetry.version>
   </properties>
 
   <build>
@@ -38,7 +40,7 @@
                 <artifactItem>
                   <groupId>io.opentelemetry.javaagent</groupId>
                   <artifactId>opentelemetry-javaagent</artifactId>
-                  <version>0.13.1</version>
+                  <version>${opentelemetry.version}</version>
                   <type>jar</type>
                   <overWrite>true</overWrite>
                   <outputDirectory>${project.build.directory}</outputDirectory>
@@ -95,14 +97,14 @@
       <dependency>
         <groupId>io.opentelemetry</groupId>
         <artifactId>opentelemetry-bom</artifactId>
-        <version>0.13.1</version>
+        <version>${opentelemetry.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>io.dropwizard</groupId>
         <artifactId>dropwizard-bom</artifactId>
-        <version>2.0.13</version>
+        <version>${dropwizard.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
