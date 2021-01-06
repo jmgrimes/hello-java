@@ -5,7 +5,7 @@
  
   <groupId>com.nerdynarwhal</groupId>
   <artifactId>hello-java</artifactId>
-  <version>2021.01.1</version>
+  <version>2021.01.2</version>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -40,6 +40,7 @@
                 <artifactItem>
                   <groupId>io.opentelemetry.javaagent</groupId>
                   <artifactId>opentelemetry-javaagent</artifactId>
+                  <classifier>all</classifier>
                   <version>${opentelemetry.version}</version>
                   <type>jar</type>
                   <overWrite>true</overWrite>
