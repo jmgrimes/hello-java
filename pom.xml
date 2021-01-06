@@ -40,6 +40,7 @@
                 <artifactItem>
                   <groupId>io.opentelemetry.javaagent</groupId>
                   <artifactId>opentelemetry-javaagent</artifactId>
+                  <classifier>all</classifier>
                   <version>${opentelemetry.version}</version>
                   <type>jar</type>
                   <overWrite>true</overWrite>
