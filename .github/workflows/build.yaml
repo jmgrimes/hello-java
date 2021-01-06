@@ -32,6 +32,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
       - name: Environment
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: true
         run: |
           echo ::set-env name=VERSION::$(mvn help:evaluate --quiet --batch-mode -Dexpression=project.version -DforceStdout)
       - name: Build and Test with Maven
