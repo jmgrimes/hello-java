@@ -34,3 +34,13 @@ template: Hello, %s! # The format for the hello message, must include a %s for t
 defaultName: Stranger # The name to use when a name is not specified in the "name" query parameter.
 ```
 
+## Telemetry
+
+This application uses the OpenTelemetry Java Instrumentation library to provide 
+an out of the box experience for publishing traces and metrics via OTLP.  To 
+enable this functionality, an OTLP collector is expected to be running on port 
+55680 within the same pod in Kubernetes.  This can be overridden with the 
+OTEL_OTLP_ENDPOINT environment variable to ship these traces and metrics to another 
+location, or OTEL_EXPORTER environment variable can be set to "logging" to bypass 
+the OTLP endpoint and log these traces directly to the console.
+
