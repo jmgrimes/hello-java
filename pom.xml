@@ -5,7 +5,7 @@
  
   <groupId>com.nerdynarwhal</groupId>
   <artifactId>hello-java</artifactId>
-  <version>2021.01.3</version>
+  <version>2021.02.0</version>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -120,6 +120,10 @@
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.opentelemetry</groupId>
+      <artifactId>opentelemetry-extension-annotations</artifactId>
     </dependency>
     <dependency>
       <groupId>org.projectlombok</groupId>
